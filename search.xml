@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/03/05/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">bash</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></div>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>大话数据结构笔记</title>
+    <url>/2020/03/04/%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<style type="text/css">
+span.r{background-color:#fbbaba;} /* 红色荧光笔 */
+span.b{background-color:#aecdea;} /* 蓝色荧光笔 */
+span.y{background-color:yellow;}  /* 黄色荧光笔 */
+font.fr{color:red;}               /* 红色字 */ 
+font.fg{color:#5a9d3d;}           /* 绿色字 */    
+font.fb{color:#03acac;}           /* 蓝色字 */
+</style>
+
+
+<h1 id="第1章-数据结构绪论"><a href="#第1章-数据结构绪论" class="headerlink" title="第1章 数据结构绪论"></a>第1章 数据结构绪论</h1><p><strong>数据结构:</strong> 是相互之间存在一种或多种特定关系的数据元素的集合。</p>
+<h2 id="1-4-基本概念和术语"><a href="#1-4-基本概念和术语" class="headerlink" title="1.4 基本概念和术语"></a>1.4 基本概念和术语</h2><ol>
+<li><strong>数据:</strong> 是<span class="y">描述客观事物的符号</span>，是计算机中可操作的对象，是能<u>被计算机识别</u>，并<u>输入给计算机处理的符号集合</u>。</li>
+<li><strong>数据元素（记录）:</strong> 是<span class="y">组成数据</span>的、有一定意义的基本单位，在计算机中通常作为整体处理。</li>
+<li><strong>数据项:</strong> 一个<span class="y">数据元素可由若干个数据项组成</span>。  </li>
+<li><strong>数据对象:</strong> 是<span class="y">性质相同的数据元素的集合</span>，是<span class="r">数据的子集</span>。  <ul>
+<li>性质相同—数据元素<u><strong>具有相同数量和类型</strong></u>的数据项。  </li>
+<li>在不产生混淆的情况下，简称数据。</li>
+</ul>
+</li>
+<li><strong>数据结构：</strong> 是<span class="y">相互之间存在一种或多种特定关系的数据元素的集合。</span>即数据具有<u>组织形式</u>。<ul>
+<li><strong>逻辑结构：</strong> 指<span class="y">数据对象中数据元素之间的相互关系。</span> 分为以下四种：<ul>
+<li><strong>集合结构：</strong> 数据元素间关系只有<span class="b">“同属于一个集合”</span>。<br>  <a href="images/!%5B%5D(images/2020-03-04-21-18-24.png).png" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="images/!%5B%5D(images/2020-03-04-21-18-24.png).png" class="lazyload"></a></li>
+<li><strong>线性结构：</strong> 数据元素之间是<span class="b">一对一关系</span>。<br>  <a href="images/2020-03-04-21-23-38.png" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="images/2020-03-04-21-23-38.png" class="lazyload"></a></li>
+<li><strong>树形结构：</strong> 数据元素之间存在<span class="b">一对多的层次关系</span>。<br>  <a href="images/2020-03-04-21-26-29.png" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="images/2020-03-04-21-26-29.png" class="lazyload"></a></li>
+<li><strong>图形结构：</strong> 数据元素之间存在<span class="b">多对多关系</span>。<br>  <a href="images/2020-03-04-21-26-53.png" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="images/2020-03-04-21-26-53.png" class="lazyload"></a><br>PS：用示意图表示数据的逻辑结构时：</li>
+<li>将每个数据元素看做一个结点，用圆圈表示。</li>
+<li>元素之间的逻辑关系用结点之间的连线表示，若此关系有方向就带上箭头。<ul>
+<li><strong>物理结构（存储结构）：</strong> 指<span class="y">数据的逻辑结构在计算机中的存储形式。</span>  </li>
+</ul>
+</li>
+<li>数据是数据元素的集合，则物理结构就是<span class="r">如何把数据元素存储到计算机存储器中</span>。</li>
+<li>存储结构应正确反映元素间的逻辑关系。有以下两种：<ul>
+<li><strong>顺序存储结构：</strong> 将数据元素存放在<span class="b">地址连续的存储单元</span>。<br><span class="r">数据间的逻辑关系与物理关系一致</span>。<font class="fb">Eg：数组</font><br><a href="images/2020-03-04-21-43-01.png" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="images/2020-03-04-21-43-01.png" class="lazyload"></a></li>
+<li><strong>链式存储结构：</strong> 将数据元素存放在<span class="b">任意的存储单元</span>，存储单元可以连续可以不连续。<br><span class="r">数据元素的物理关系不能反映逻辑关系</span>，所以需一个 <strong>指针</strong> 存放数据元素的地址，则可通过地址找到相关联数据元素的位置。<font class="fb">Eg：链表</font><br><a href="images/2020-03-04-21-47-38.png" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="images/2020-03-04-21-47-38.png" class="lazyload"></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>总结：</p>
+<ul>
+<li><span class="r"><strong>数据项是数据不可分割的最小单位。</strong></span></li>
+<li>数据项组成数据元素（记录），数据元素组成数据。<br><font class="fb">Eg：人类是数据，人是数据元素，眼、耳、口、鼻等是数据项。</font><ul>
+<li>数据对象是相同数据元素的集合，数据结构是相互间存在某关系的数据元素的集合。<br><font class="fb">Eg:人都有姓名、生日、性别等相同的数据项，这些数据项的集合为数据对象。</font></li>
+<li>研究数据结构的意义：分析待处理对象的性质及各处理对象之间存在的关系，以编写好的程序。</li>
+<li>数据结构分为逻辑结构、物理结构。<br>逻辑结构—数据对象中数据元素之间的关系，分为集合结构、线性结构、树形结构、图形结构</li>
+</ul>
+</li>
+</ul>
+<p>　</p>
+<p>　</p>
+]]></content>
+  </entry>
+</search>
