@@ -2140,7 +2140,7 @@ blockquote footer cite:before {
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
-  height: 100vh;
+  height: 300em#主頁top_img高度 例如 300px/300em/300rem  不能使用百分比;
 }
 #nav.not_index_bg {
   height: 20rem;
