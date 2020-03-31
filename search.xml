@@ -1,6 +1,432 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>JUnit测试实例</title>
+    <url>/2020/03/31/JUnit%E6%B5%8B%E8%AF%95%E5%AE%9E%E4%BE%8B/</url>
+    <content><![CDATA[<h1 id="JUnit-测试实例"><a href="#JUnit-测试实例" class="headerlink" title="JUnit 测试实例"></a>JUnit 测试实例</h1><h2 id="一、-实验要求"><a href="#一、-实验要求" class="headerlink" title="一、 实验要求"></a>一、 实验要求</h2><p>对Rectangle程序进行测试：根据已经学习的测试思想，对函数getArea()、getPerimeter()和findMax()进行测试。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Comparator;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rect</span> </span>&#123;   </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> length;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> width;    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rect</span><span class="params">(<span class="keyword">int</span> length, <span class="keyword">int</span> width)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.length = length;</span><br><span class="line">        <span class="keyword">this</span>.width = width;</span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getLength</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> length;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLength</span><span class="params">(<span class="keyword">int</span> length)</span> </span>&#123;<span class="keyword">this</span>.length = length;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getWidth</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> width;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWidth</span><span class="params">(<span class="keyword">int</span> width)</span> </span>&#123;<span class="keyword">this</span>.width = width;&#125; </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getArea</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> length*width;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPerimeter</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> <span class="number">2</span>*length + width;&#125;   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getObject</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"("</span>+length+<span class="string">","</span>+width+<span class="string">")"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;AnyType&gt;</span><br><span class="line">    <span class="function">AnyType <span class="title">findMax</span><span class="params">(AnyType[] arr, Comparator&lt;? <span class="keyword">super</span> AnyType&gt; cmp)</span> </span>&#123;     </span><br><span class="line">        <span class="keyword">int</span> maxIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++)</span><br><span class="line">            <span class="keyword">if</span>(cmp.compare(arr[i], arr[maxIndex]) &gt; <span class="number">0</span>)</span><br><span class="line">                maxIndex = i;</span><br><span class="line">        <span class="keyword">return</span> arr[maxIndex];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">areaCompare</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Rect</span>&gt; </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Rect o1, Rect o2)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">            <span class="keyword">if</span>(o1.getArea() &lt; o2.getArea()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(o1.getArea() == o2.getArea()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">perimeterCompare</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Rect</span>&gt; </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Rect o1, Rect o2)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">            <span class="keyword">if</span>(o1.getPerimeter() &gt; o2.getPerimeter()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(o1.getPerimeter() == o2.getPerimeter()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Rect[] arr = <span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                <span class="keyword">new</span> Rect(<span class="number">10</span>, <span class="number">20</span>), <span class="keyword">new</span> Rect(<span class="number">2</span>, <span class="number">65</span>),</span><br><span class="line">                <span class="keyword">new</span> Rect(<span class="number">3</span>, <span class="number">10</span>), <span class="keyword">new</span> Rect(<span class="number">6</span>, <span class="number">20</span>)</span><br><span class="line">                &#125;;</span><br><span class="line">        System.out.println(<span class="string">"面积最大："</span>+findMax(arr, <span class="keyword">new</span> areaCompare()).getObject());</span><br><span class="line">        System.out.println(<span class="string">"周长最长："</span>+findMax(arr, <span class="keyword">new</span> perimeterCompare()).getObject());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<div class="note primary">
+            <p>若对代码中实现比较器的写法不理解，请看“四、参考文献” <a href="https://blog.csdn.net/qq_35008612/article/details/80956990" target="_blank" rel="noopener">Comparator接口的使用</a></p>
+          </div>
+
+
+
+<h2 id="二、测试过程"><a href="#二、测试过程" class="headerlink" title="二、测试过程"></a>二、测试过程</h2><h3 id="2-1-测试getArea-方法——返回矩形面积"><a href="#2-1-测试getArea-方法——返回矩形面积" class="headerlink" title="2.1 测试getArea()方法——返回矩形面积"></a>2.1 测试getArea()方法——返回矩形面积</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getArea</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> length*width;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ol>
+<li><p>测试分析</p>
+<p>根据Rect类可得成员变量length、width为int型，含义为矩形的长宽，故合法输入为正数，负数和0位非法输入。</p>
+<p>此处假设非法输入返回值为-1。</p>
+<p>设计测试用例如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">用例编号</th>
+<th align="center">测试用例（length,width）</th>
+<th align="center">预期结果（返回值）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">(3,4)</td>
+<td align="center">12</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">(-3,4)</td>
+<td align="center">-1</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">(4,-3)</td>
+<td align="center">-1</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">(-5,-6)</td>
+<td align="center">-1</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">(3,0)</td>
+<td align="center">-1</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">(0,4)</td>
+<td align="center">-1</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">(0,0)</td>
+<td align="center">-1</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>测试代码</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> junit.framework.TestCase;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.Parameterized;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(Parameterized<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">TestRectArea</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> length;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> width;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> expected;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestRectArea</span><span class="params">(<span class="keyword">int</span> length, <span class="keyword">int</span> width, <span class="keyword">int</span> expected)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.length=length;</span><br><span class="line">        <span class="keyword">this</span>.width=width;</span><br><span class="line">        <span class="keyword">this</span>.expected=expected;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//假设要测试的getArea方法遇到非法输入时返回-1</span></span><br><span class="line">    <span class="meta">@Parameterized</span>.Parameters(name=<span class="string">"&#123;index&#125;:&#123;0&#125;*&#123;1&#125;=&#123;2&#125;"</span>)</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Iterable&lt;Object []&gt; data()&#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.asList(<span class="keyword">new</span> Object[][]&#123;</span><br><span class="line">                &#123;<span class="number">3</span>,<span class="number">4</span>,<span class="number">12</span>&#125;,</span><br><span class="line">                &#123;-<span class="number">3</span>,<span class="number">4</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">4</span>,-<span class="number">3</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;-<span class="number">5</span>,-<span class="number">6</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">3</span>,<span class="number">0</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">0</span>,<span class="number">4</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">0</span>,<span class="number">0</span>,-<span class="number">1</span>&#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testGetArea</span><span class="params">()</span></span>&#123;</span><br><span class="line">        assertEquals(<span class="keyword">new</span> Rect(length,width).getArea(),expected);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>测试结果</p>
+<p><a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331131227787.png" data-fancybox="group" data-caption="image-20200331131227787" class="fancybox"><img alt="image-20200331131227787" title="image-20200331131227787" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331131227787.png" class="lazyload"></a></p>
+<table>
+<thead>
+<tr>
+<th align="center">用例编号</th>
+<th align="center">测试用例（length,width）</th>
+<th align="center">预期结果（返回值）</th>
+<th align="center">实际结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">(3,4)</td>
+<td align="center">12</td>
+<td align="center">12</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">(-3,4)</td>
+<td align="center">-1</td>
+<td align="center">-12</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">(4,-3)</td>
+<td align="center">-1</td>
+<td align="center">-12</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">(-5,-6)</td>
+<td align="center">-1</td>
+<td align="center">30</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">(3,0)</td>
+<td align="center">-1</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">(0,4)</td>
+<td align="center">-1</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">(0,0)</td>
+<td align="center">-1</td>
+<td align="center">0</td>
+</tr>
+</tbody></table>
+<p>由此可见，此方法代码并没有考虑输入为0和负数的非法情况。</p>
+</li>
+</ol>
+<hr>
+<h3 id="2-2-测试getPerimeter-方法——返回矩形周长"><a href="#2-2-测试getPerimeter-方法——返回矩形周长" class="headerlink" title="2.2 测试getPerimeter()方法——返回矩形周长"></a>2.2 测试getPerimeter()方法——返回矩形周长</h3>   <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPerimeter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span>*length + width;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<ol>
+<li><p>测试分析</p>
+<p>同理于测试getArea()，此处需要的参数只有length、width，所以考虑负数和0的非法输入。</p>
+<p>设计测试用例如下：   </p>
+<table>
+<thead>
+<tr>
+<th align="center">用例编号</th>
+<th align="center">测试用例（length，width）</th>
+<th align="center">预期结果（返回值）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">(5,6)</td>
+<td align="center">22</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">(-3,4)</td>
+<td align="center">-1</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">(3,-4)</td>
+<td align="center">-1</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">(-3,-4)</td>
+<td align="center">-1</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">(3,0)</td>
+<td align="center">-1</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">(0,4)</td>
+<td align="center">-1</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">(0,0)</td>
+<td align="center">-1</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>测试代码</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> junit.framework.TestCase;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.Parameterized;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(Parameterized<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">TestRectPerimeter</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> length;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> width;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> expected;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestRectPerimeter</span><span class="params">(<span class="keyword">int</span> length,<span class="keyword">int</span> width,<span class="keyword">int</span> expected)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.length=length;</span><br><span class="line">        <span class="keyword">this</span>.width=width;</span><br><span class="line">        <span class="keyword">this</span>.expected=expected;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//假设要测试的getPerimeter方法遇到非法输入时返回-1</span></span><br><span class="line">    <span class="meta">@Parameterized</span>.Parameters(name=<span class="string">"&#123;index&#125;:(&#123;0&#125;+&#123;1&#125;)*2=&#123;2&#125;"</span>)</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Iterable&lt;Object []&gt; data()&#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.asList(<span class="keyword">new</span> Object[][]&#123;</span><br><span class="line">                &#123;<span class="number">5</span>,<span class="number">6</span>,<span class="number">22</span>&#125;,</span><br><span class="line">                &#123;-<span class="number">3</span>,<span class="number">4</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">3</span>,-<span class="number">4</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;-<span class="number">3</span>,-<span class="number">4</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">3</span>,<span class="number">0</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">0</span>,<span class="number">4</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">0</span>,<span class="number">0</span>,-<span class="number">1</span>&#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testGetPerimeter</span><span class="params">()</span></span>&#123;</span><br><span class="line">        assertEquals(<span class="keyword">new</span> Rect(length,width).getPerimeter(),expected);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>测试结果</p>
+<p><a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331132940836.png" data-fancybox="group" data-caption="image-20200331132940836" class="fancybox"><img alt="image-20200331132940836" title="image-20200331132940836" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331132940836.png" class="lazyload"></a></p>
+<table>
+<thead>
+<tr>
+<th align="center">用例编号</th>
+<th align="center">测试用例（length，width）</th>
+<th align="center">预期结果（返回值）</th>
+<th align="center">实际结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">(5,6)</td>
+<td align="center">22</td>
+<td align="center">16</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">(-3,4)</td>
+<td align="center">-1</td>
+<td align="center">-2</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">(3,-4)</td>
+<td align="center">-1</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">(-3,-4)</td>
+<td align="center">-1</td>
+<td align="center">-10</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">(3,0)</td>
+<td align="center">-1</td>
+<td align="center">6</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">(0,4)</td>
+<td align="center">-1</td>
+<td align="center">4</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">(0,0)</td>
+<td align="center">-1</td>
+<td align="center">0</td>
+</tr>
+</tbody></table>
+<p>可见，方法代码并没有考虑输入为0和负数的非法情况，且计算过程存在问题，返回去看代码发现没有加括号，应</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="number">2</span>*(length+width);</span><br></pre></td></tr></table></figure></div>
+
+</li>
+</ol>
+<hr>
+<h3 id="2-3-测试findMax-方法——返回矩形数组中面积or周长最大的矩形对象"><a href="#2-3-测试findMax-方法——返回矩形数组中面积or周长最大的矩形对象" class="headerlink" title="2.3 测试findMax()方法——返回矩形数组中面积or周长最大的矩形对象"></a>2.3 测试findMax()方法——返回矩形数组中面积or周长最大的矩形对象</h3><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">AnyType <span class="title">findMax</span><span class="params">(AnyType[] arr, Comparator&lt;? <span class="keyword">super</span> AnyType&gt; cmp)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> maxIndex = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++)</span><br><span class="line">        <span class="keyword">if</span>(cmp.compare(arr[i], arr[maxIndex]) &gt; <span class="number">0</span>)</span><br><span class="line">            maxIndex = i;</span><br><span class="line">    <span class="keyword">return</span> arr[maxIndex];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="2-3-1-比较器areaCompare——比较面积"><a href="#2-3-1-比较器areaCompare——比较面积" class="headerlink" title="2.3.1 比较器areaCompare——比较面积"></a>2.3.1 比较器areaCompare——比较面积</h4><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">areaCompare</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Rect</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Rect o1, Rect o2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">if</span>(o1.getArea() &lt; o2.getArea()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(o1.getArea() == o2.getArea()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ol>
+<li><p>测试分析</p>
+<p>需要参数length、width，所以考虑负数和0的非法输入。</p>
+<p>需注意⚠️：若比较面积时输入的矩形数组都为非法输入（矩形长宽都存在0或负数），getArea()因为非法输入都return -1，则areaCompare比较器中比较函数compare都会return 0，则findMax中return arr[0]，返回一个非法矩形，显然错误。故此处findMax也要有一个对应非法输入时的输出，假设为null。</p>
+<p>设计测试用例如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">用例编号</th>
+<th align="center">测试用例Rect[]</th>
+<th align="center">预期结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">(10,20),(2,65),(3,10),(6,20)</td>
+<td align="center">(10,20)</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">(-4,3),(5,-6),(-10,-10),(1,1)</td>
+<td align="center">(1,1)</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">(0,3),(6,0),(0,0),(1,1)</td>
+<td align="center">(1,1)</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">(0,3),(6,0),(0,0),(-1,-1)</td>
+<td align="center">null</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>测试代码</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> junit.framework.TestCase;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.Parameterized;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(Parameterized<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">TestRectFindMaxArea</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Rect[] arr;</span><br><span class="line">    <span class="keyword">private</span> Rect expected;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestRectFindMaxArea</span><span class="params">(Rect[] arr,Rect expected)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.arr=arr;</span><br><span class="line">        <span class="keyword">this</span>.expected=expected;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Parameterized</span>.Parameters</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Iterable&lt;Object[]&gt; data()&#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.asList(<span class="keyword">new</span> Object[][]&#123;</span><br><span class="line">                &#123;<span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">10</span>, <span class="number">20</span>), <span class="keyword">new</span> Rect(<span class="number">2</span>, <span class="number">65</span>),</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">3</span>, <span class="number">10</span>), <span class="keyword">new</span> Rect(<span class="number">6</span>, <span class="number">20</span>)</span><br><span class="line">                &#125;,<span class="keyword">new</span> Rect(<span class="number">10</span>,<span class="number">20</span>)&#125;,</span><br><span class="line">                &#123;<span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                        <span class="keyword">new</span> Rect(-<span class="number">4</span>, <span class="number">3</span>), <span class="keyword">new</span> Rect(<span class="number">5</span>, -<span class="number">6</span>),</span><br><span class="line">                        <span class="keyword">new</span> Rect(-<span class="number">10</span>, -<span class="number">10</span>), <span class="keyword">new</span> Rect(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">                &#125;,<span class="keyword">new</span> Rect(<span class="number">1</span>,<span class="number">1</span>)&#125;,</span><br><span class="line">                &#123;<span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">3</span>), <span class="keyword">new</span> Rect(<span class="number">6</span>, <span class="number">0</span>),</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>), <span class="keyword">new</span> Rect(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">                &#125;,<span class="keyword">new</span> Rect(<span class="number">1</span>,<span class="number">1</span>)&#125;,</span><br><span class="line">                &#123;<span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">3</span>), <span class="keyword">new</span> Rect(<span class="number">6</span>, <span class="number">0</span>),</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>), <span class="keyword">new</span> Rect(-<span class="number">1</span>, -<span class="number">1</span>)</span><br><span class="line">                &#125;,<span class="keyword">null</span>&#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindMax</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Rect temp=Rect.findMax(arr, <span class="keyword">new</span> Rect.areaCompare());</span><br><span class="line">        String stemp,sexpected;</span><br><span class="line">        <span class="keyword">if</span>(temp!=<span class="keyword">null</span>) stemp=temp.getObject();</span><br><span class="line">        <span class="keyword">else</span> stemp=<span class="string">"null"</span>;</span><br><span class="line">        <span class="keyword">if</span>(expected!=<span class="keyword">null</span>) sexpected=expected.getObject();</span><br><span class="line">        <span class="keyword">else</span> sexpected=<span class="string">"null"</span>;</span><br><span class="line">        assertEquals(stemp,sexpected);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>测试结果</p>
+<p><a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331134519946.png" data-fancybox="group" data-caption="image-20200331134519946" class="fancybox"><img alt="image-20200331134519946" title="image-20200331134519946" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331134519946.png" class="lazyload"></a></p>
+<table>
+<thead>
+<tr>
+<th align="center">用例编号</th>
+<th align="center">测试用例Rect[]</th>
+<th align="center">预期结果</th>
+<th align="center">实际结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">(10,20),(2,65),(3,10),(6,20)</td>
+<td align="center">(10,20)</td>
+<td align="center">(3,10)</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">(-4,3),(5,-6),(-10,-10),(1,1)</td>
+<td align="center">(1,1)</td>
+<td align="center">(5,-6)</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">(0,3),(6,0),(0,0),(1,1)</td>
+<td align="center">(1,1)</td>
+<td align="center">(0,3)</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">(0,3),(6,0),(0,0),(-1,-1)</td>
+<td align="center">null</td>
+<td align="center">(0,3)</td>
+</tr>
+</tbody></table>
+<p>可见，代码没有考虑输入矩形数组存在矩形长宽非法or全部矩形长宽均非法的情况，且通过第一个测试用例可知，计算过程存在问题，返回去看代码发现areaCompare比较器中比较函数compare存在逻辑错误，应返回最大矩形对象，却返回最小矩形对象，应</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Rect o1, Rect o2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(o1.getArea() &gt; o2.getArea()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(o1.getArea() == o2.getArea()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+</li>
+</ol>
+<hr>
+<h4 id="2-3-2-比较器perimeterCompare——比较周长"><a href="#2-3-2-比较器perimeterCompare——比较周长" class="headerlink" title="2.3.2 比较器perimeterCompare——比较周长"></a>2.3.2 比较器perimeterCompare——比较周长</h4><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">perimeterCompare</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Rect</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Rect o1, Rect o2)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">if</span>(o1.getPerimeter() &gt; o2.getPerimeter()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(o1.getPerimeter() == o2.getPerimeter()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ol>
+<li><p>测试分析</p>
+<p>同理于areaCompare，需要参数length、width，所以考虑负数和0的非法输入；设置null为全非法输入的返回值。<br>设计测试用例</p>
+<table>
+<thead>
+<tr>
+<th align="center">用例编号</th>
+<th align="center">测试用例Rect[]</th>
+<th align="center">预期结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">(10,20),(2,65),(3,10),(6,20)</td>
+<td align="center">(2,65)</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">(-4,3),(5,-6),(-10,-10),(1,1)</td>
+<td align="center">(1,1)</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">(0,3),(6,0),(0,0),(1,1)</td>
+<td align="center">(1,1)</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">(0,3),(6,0),(0,0),(-1,-1)</td>
+<td align="center">null</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>测试代码</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> junit.framework.TestCase;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.Parameterized;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(Parameterized<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">TestRectFindMaxPerimeter</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Rect[] arr;</span><br><span class="line">    <span class="keyword">private</span> Rect expected;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestRectFindMaxPerimeter</span><span class="params">(Rect[] arr,Rect expected)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.arr=arr;</span><br><span class="line">        <span class="keyword">this</span>.expected=expected;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Parameterized</span>.Parameters</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Iterable&lt;Object[]&gt; data()&#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.asList(<span class="keyword">new</span> Object[][]&#123;</span><br><span class="line">                &#123;<span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">10</span>, <span class="number">20</span>), <span class="keyword">new</span> Rect(<span class="number">2</span>, <span class="number">65</span>),</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">3</span>, <span class="number">10</span>), <span class="keyword">new</span> Rect(<span class="number">6</span>, <span class="number">20</span>)</span><br><span class="line">                &#125;,<span class="keyword">new</span> Rect(<span class="number">2</span>,<span class="number">65</span>)&#125;,</span><br><span class="line">                &#123;<span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                        <span class="keyword">new</span> Rect(-<span class="number">4</span>, <span class="number">3</span>), <span class="keyword">new</span> Rect(<span class="number">5</span>, -<span class="number">6</span>),</span><br><span class="line">                        <span class="keyword">new</span> Rect(-<span class="number">10</span>, -<span class="number">10</span>), <span class="keyword">new</span> Rect(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">                &#125;,<span class="keyword">new</span> Rect(<span class="number">1</span>,<span class="number">1</span>)&#125;,</span><br><span class="line">                &#123;<span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">3</span>), <span class="keyword">new</span> Rect(<span class="number">6</span>, <span class="number">0</span>),</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>), <span class="keyword">new</span> Rect(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">                &#125;,<span class="keyword">new</span> Rect(<span class="number">1</span>,<span class="number">1</span>)&#125;,</span><br><span class="line">                &#123;<span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">3</span>), <span class="keyword">new</span> Rect(<span class="number">6</span>, <span class="number">0</span>),</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>), <span class="keyword">new</span> Rect(-<span class="number">1</span>, -<span class="number">1</span>)</span><br><span class="line">                &#125;,<span class="keyword">null</span>&#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindMax</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Rect temp=Rect.findMax(arr, <span class="keyword">new</span> Rect.perimeterCompare());</span><br><span class="line">        String stemp,sexpected;</span><br><span class="line">        <span class="keyword">if</span>(temp!=<span class="keyword">null</span>) stemp=temp.getObject();</span><br><span class="line">        <span class="keyword">else</span> stemp=<span class="string">"null"</span>;</span><br><span class="line">        <span class="keyword">if</span>(expected!=<span class="keyword">null</span>) sexpected=expected.getObject();</span><br><span class="line">        <span class="keyword">else</span> sexpected=<span class="string">"null"</span>;</span><br><span class="line">        assertEquals(stemp,sexpected);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+</li>
+</ol>
+<ol start="3">
+<li><p>测试结果</p>
+<p><a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331135706749.png" data-fancybox="group" data-caption="image-20200331135706749" class="fancybox"><img alt="image-20200331135706749" title="image-20200331135706749" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331135706749.png" class="lazyload"></a></p>
+<table>
+<thead>
+<tr>
+<th align="center">用例编号</th>
+<th align="center">测试用例Rect[]</th>
+<th align="center">预期结果</th>
+<th align="center">实际结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">(10,20),(2,65),(3,10),(6,20)</td>
+<td align="center">(2,65)</td>
+<td align="center">(2,65)</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">(-4,3),(5,-6),(-10,-10),(1,1)</td>
+<td align="center">(1,1)</td>
+<td align="center">(5,-6)</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">(0,3),(6,0),(0,0),(1,1)</td>
+<td align="center">(1,1)</td>
+<td align="center">(6,0)</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">(0,3),(6,0),(0,0),(-1,-1)</td>
+<td align="center">null</td>
+<td align="center">(6,0)</td>
+</tr>
+</tbody></table>
+<p>可见代码同样没有考虑输入矩形数组存在矩形长宽非法or全部矩形长宽均非法的情况。</p>
+</li>
+</ol>
+<hr>
+<h2 id="三、修改代码"><a href="#三、修改代码" class="headerlink" title="三、修改代码"></a>三、修改代码</h2><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Comparator;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rect</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> length;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> width;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rect</span><span class="params">(<span class="keyword">int</span> length, <span class="keyword">int</span> width)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.length = length;</span><br><span class="line">        <span class="keyword">this</span>.width = width;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getLength</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> length;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLength</span><span class="params">(<span class="keyword">int</span> length)</span> </span>&#123;<span class="keyword">this</span>.length = length;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getWidth</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> width;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWidth</span><span class="params">(<span class="keyword">int</span> width)</span> </span>&#123;<span class="keyword">this</span>.width = width;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getArea</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(length&gt;<span class="number">0</span> &amp;&amp; width &gt;<span class="number">0</span>) <span class="keyword">return</span> length*width;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPerimeter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(length &gt;<span class="number">0</span> &amp;&amp; width &gt;<span class="number">0</span>) <span class="keyword">return</span> <span class="number">2</span>*(length + width);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getObject</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"("</span>+length+<span class="string">","</span>+width+<span class="string">")"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;AnyType&gt;</span><br><span class="line">    <span class="function">AnyType <span class="title">findMax</span><span class="params">(AnyType[] arr, Comparator&lt;? <span class="keyword">super</span> AnyType&gt; cmp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++)</span><br><span class="line">            <span class="keyword">if</span>(cmp.compare(arr[i], arr[maxIndex]) &gt; <span class="number">0</span>)&#123;</span><br><span class="line">                maxIndex = i;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">if</span>(((Rect)arr[maxIndex]).getLength()&lt;=<span class="number">0</span> || ((Rect)arr[maxIndex]).getWidth()&lt;=<span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> arr[maxIndex];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">areaCompare</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Rect</span>&gt; </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Rect o1, Rect o2)</span></span>&#123;</span><br><span class="line">             <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">            <span class="keyword">if</span>(o1.getArea() &gt; o2.getArea()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(o1.getArea() == o2.getArea()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">perimeterCompare</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Rect</span>&gt; </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Rect o1, Rect o2)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">            <span class="keyword">if</span>(o1.getPerimeter() &gt; o2.getPerimeter()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(o1.getPerimeter() == o2.getPerimeter()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Rect[] arr = <span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                <span class="keyword">new</span> Rect(<span class="number">10</span>, <span class="number">20</span>), <span class="keyword">new</span> Rect(<span class="number">2</span>, <span class="number">65</span>),</span><br><span class="line">                <span class="keyword">new</span> Rect(<span class="number">3</span>, <span class="number">10</span>), <span class="keyword">new</span> Rect(<span class="number">6</span>, <span class="number">20</span>)</span><br><span class="line">        &#125;;</span><br><span class="line">        Rect rect1=findMax(arr, <span class="keyword">new</span> areaCompare());</span><br><span class="line">        Rect rect2=findMax(arr, <span class="keyword">new</span> perimeterCompare());</span><br><span class="line">        <span class="keyword">if</span>(rect1 == <span class="keyword">null</span>) System.out.println(<span class="string">"输入的矩形数组中所有矩形长宽均非法！"</span>);</span><br><span class="line">        <span class="keyword">else</span> System.out.println(<span class="string">"面积最大："</span>+rect1.getObject());</span><br><span class="line">        <span class="keyword">if</span>(rect2 == <span class="keyword">null</span>) System.out.println(<span class="string">"输入的矩形数组中所有矩形长宽均非法！"</span>);</span><br><span class="line">        <span class="keyword">else</span> System.out.println(<span class="string">"周长最长："</span>+rect2.getObject());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>为方便测试，使用测试套件Suite，代码如下：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.Suite;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(Suite<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">Suite</span>.<span class="title">SuiteClasses</span>(</span>&#123;TestRectArea<span class="class">.<span class="keyword">class</span>,<span class="title">TestRectPerimeter</span>.<span class="title">class</span>,<span class="title">TestRectFindMaxArea</span>.<span class="title">class</span>,<span class="title">TestRectFindMaxPerimeter</span>.<span class="title">class</span>&#125;)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">TestRectSuite</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>测试结果：</p>
+<a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331140528799.png" data-fancybox="group" data-caption="image-20200331140528799" class="fancybox"><img alt="image-20200331140528799" style="zoom:40%;" title="image-20200331140528799" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331140528799.png" class="lazyload"></a>
+
+<p>程序执行结果：</p>
+<a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331140852779.png" data-fancybox="group" data-caption="image-20200331140852779" class="fancybox"><img alt="image-20200331140852779" style="zoom:33%;" title="image-20200331140852779" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331140852779.png" class="lazyload"></a>
+
+<hr>
+<h2 id="四、参考文献"><a href="#四、参考文献" class="headerlink" title="四、参考文献"></a>四、参考文献</h2><p> <a href="https://blog.csdn.net/qq_35008612/article/details/80956990" target="_blank" rel="noopener">Comparator接口的使用</a></p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>Java</tag>
+        <tag>JUnit</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Junit+idea入门使用</title>
     <url>/2020/03/27/Junit-idea%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h1 id="Junit-idea入门使用"><a href="#Junit-idea入门使用" class="headerlink" title="Junit+idea入门使用"></a>Junit+idea入门使用</h1><h2 id="一、Junit配置"><a href="#一、Junit配置" class="headerlink" title="一、Junit配置"></a>一、Junit配置</h2><ol>
@@ -92,7 +518,7 @@
 <p>运行结果如下：</p>
 <a href="/2020/03/27/Junit-idea%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8/8.jpg" data-fancybox="group" data-caption="8" class="fancybox"><img alt="8" style="zoom:50%;" title="8" data-src="/2020/03/27/Junit-idea%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8/8.jpg" class="lazyload"></a>
 <div class="note warning">
-            <pre><code>若测试只需单个参数，则无需将其包装为数组，此情况可提供一个迭代器或对象数组。</code></pre><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Parameters</span></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> Iterable&lt;? extends Object&gt; data() &#123;</span><br><span class="line">     <span class="keyword">return</span> Arrays.asList(<span class="string">"first test"</span>, <span class="string">"second test"</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></div><p>​    或</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Parameters</span></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> Object[] data() &#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="keyword">new</span> Object[] &#123; <span class="string">"first test"</span>, <span class="string">"second test"</span> &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></div>
+            <p>若测试只需单个参数，则无需将其包装为数组，此情况可提供一个迭代器或对象数组。</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Parameters</span></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> Iterable&lt;? extends Object&gt; data() &#123;</span><br><span class="line">     <span class="keyword">return</span> Arrays.asList(<span class="string">"first test"</span>, <span class="string">"second test"</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></div><p>​    或</p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Parameters</span></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> Object[] data() &#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="keyword">new</span> Object[] &#123; <span class="string">"first test"</span>, <span class="string">"second test"</span> &#125;;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></div>
           </div>
 
 </li>
@@ -195,6 +621,7 @@
       <tags>
         <tag>软件测试</tag>
         <tag>Java</tag>
+        <tag>JUnit</tag>
       </tags>
   </entry>
   <entry>
