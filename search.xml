@@ -12,6 +12,8 @@ font.fg{color:#5a9d3d;}           /* 绿色字 */
 font.fb{color:#03acac;}           /* 蓝色字 */
 </style>
 
+
+<p>[TOC]</p>
 <h1 id="EasyMock入门使用"><a href="#EasyMock入门使用" class="headerlink" title="EasyMock入门使用"></a>EasyMock入门使用</h1><h2 id="一、EasyMock安装"><a href="#一、EasyMock安装" class="headerlink" title="一、EasyMock安装"></a>一、EasyMock安装</h2><ol>
 <li><p>EasyMock是一套通过简单的方法对于指定的接口或类生成Mock对象的类库，它能利用对接口或类的模拟来辅助单元测试。</p>
 </li>
@@ -77,11 +79,8 @@ font.fb{color:#03acac;}           /* 蓝色字 */
  <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">mockResultSet.getString(<span class="number">1</span>);</span><br><span class="line">EasyMock.expectLastCall().andReturn(<span class="string">"My return value"</span>);</span><br></pre></td></tr></table></figure></div>
 
 <p> <font class="fb">或：</font></p>
+ <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.expect(mockResultSet.getString(<span class="number">1</span>)).andReturn(<span class="string">"My return value"</span>);</span><br></pre></td></tr></table></figure></div>
 </li>
-</ol>
-<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.expect(mockResultSet.getString(<span class="number">1</span>)).andReturn(<span class="string">"My return value"</span>);</span><br></pre></td></tr></table></figure></div>
-
-<ol start="2">
 <li><p>若希望 <strong>某方法的调用总是返回一个相同的值</strong> ，为避免每次调用都为Mock对象的行为进行一次设定，可用默认返回值的方法——<code>andSubReturn</code>方法。</p>
 <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">andStubReturn</span><span class="params">(Object value)</span></span>;</span><br></pre></td></tr></table></figure></div>
 
@@ -238,11 +237,9 @@ font.fb{color:#03acac;}           /* 蓝色字 */
 <p>除此默认类型，EasyMock还提供一些特殊的Mock类型用于支持不同的需求。</p>
 <h3 id="4-1-Strick-Mock对象"><a href="#4-1-Strick-Mock对象" class="headerlink" title="4.1 Strick Mock对象"></a>4.1 Strick Mock对象</h3><p>Stick Mock对象——对方法调用的先后顺序敏感，创建方法如下：</p>
 <ol>
-<li>使用 <code>EasyMock.createStrickMock()</code> 来创建：</li>
-</ol>
-<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ResultSet strickMockResultSet = EasyMock.createStrickMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
-
-<ol start="2">
+<li><p>使用 <code>EasyMock.createStrickMock()</code> 来创建：</p>
+ <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ResultSet strickMockResultSet = EasyMock.createStrickMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
+</li>
 <li><p>类似于createMock，同样可用<code>IMocksControl</code>实例来创建一个Stick Mock对象：</p>
 <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">IMocksControl control = EasyMock.createStrictControl();</span><br><span class="line">ResultSet strickMockResultSet = control.createMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
 
@@ -252,11 +249,9 @@ font.fb{color:#03acac;}           /* 蓝色字 */
 </ol>
 <h3 id="4-2-Nice-Mock对象"><a href="#4-2-Nice-Mock对象" class="headerlink" title="4.2 Nice Mock对象"></a>4.2 Nice Mock对象</h3><p>Nice Mock对象——默认返回0，null或false等“无效值”，创建方法如下：</p>
 <ol>
-<li>使用 <code>EasyMock.createNiceMock()</code> 来创建：</li>
-</ol>
-<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ResultSet strickMockResultSet = EasyMock.createNiceMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
-
-<ol start="2">
+<li><p>使用 <code>EasyMock.createNiceMock()</code> 来创建：</p>
+ <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ResultSet strickMockResultSet = EasyMock.createNiceMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
+</li>
 <li><p>类似于createMock，同样可用<code>IMocksControl</code>实例来创建一个Nice Mock对象：</p>
 <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">IMocksControl control = EasyMock.createNiceControl();</span><br><span class="line">ResultSet strickMockResultSet = control.createMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
 
