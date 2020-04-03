@@ -1,6 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>EasyMock入门使用</title>
+    <url>/2020/04/03/EasyMock%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<style type="text/css">
+span.r{background-color:#fbbaba;} /* 红色荧光笔 */
+span.b{background-color:#aecdea;} /* 蓝色荧光笔 */
+span.y{background-color:yellow;}  /* 黄色荧光笔 */
+font.fr{color:red;}               /* 红色字 */ 
+font.fg{color:#5a9d3d;}           /* 绿色字 */    
+font.fb{color:#03acac;}           /* 蓝色字 */
+</style>
+
+<h1 id="EasyMock入门使用"><a href="#EasyMock入门使用" class="headerlink" title="EasyMock入门使用"></a>EasyMock入门使用</h1><h2 id="一、EasyMock安装"><a href="#一、EasyMock安装" class="headerlink" title="一、EasyMock安装"></a>一、EasyMock安装</h2><ol>
+<li><p>EasyMock是一套通过简单的方法对于指定的接口或类生成Mock对象的类库，它能利用对接口或类的模拟来辅助单元测试。</p>
+</li>
+<li><p>要使用EasyMock辅助单元测试，添加easymock的jar包即可。</p>
+<a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200402190315174.png" data-fancybox="group" data-caption="image-20200402190315174" class="fancybox"><img alt="image-20200402190315174" style="zoom:40%;" title="image-20200402190315174" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200402190315174.png" class="lazyload"></a>
+
+</li>
+</ol>
+<hr>
+<h2 id="二、EasyMock使用"><a href="#二、EasyMock使用" class="headerlink" title="二、EasyMock使用"></a>二、EasyMock使用</h2><p>通过EasyMock，我们可以为指定的接口动态地创建Mock对象，并利用Mock对象来模拟协同模块或领域对象，从而使单元测试顺利进行。此过程可划分为以下步骤：</p>
+<ul>
+<li>使用EasyMock生成Mock对象</li>
+<li>设定Mock对象的预期行为和输出</li>
+<li>将Mock对象切换到Replay状态</li>
+<li>调用Mock对象方法进行单元测试</li>
+<li>对Mock对象的行为进行验证</li>
+</ul>
+<h3 id="2-1-使用EasyMock生成Mock对象"><a href="#2-1-使用EasyMock生成Mock对象" class="headerlink" title="2.1 使用EasyMock生成Mock对象"></a>2.1 使用EasyMock生成Mock对象</h3><p>根据指定的接口或类，EasyMock能动态地创建Mock对象。</p>
+<h4 id="2-1-1-为接口生成Mock对象"><a href="#2-1-1-为接口生成Mock对象" class="headerlink" title="2.1.1 为接口生成Mock对象"></a>2.1.1 为接口生成Mock对象</h4><p><font class="fb">Eg：以<code>ResultSet</code>接口为例</font></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">java</span>.<span class="title">sql</span>.<span class="title">ResultSet</span> </span>&#123;</span><br><span class="line">......</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> java.lang.<span class="function">String <span class="title">getString</span><span class="params">(<span class="keyword">int</span> arg0)</span> <span class="keyword">throws</span> java.sql.SQLException</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">double</span> <span class="title">getDouble</span><span class="params">(<span class="keyword">int</span> arg0)</span> <span class="keyword">throws</span> java.sql.SQLException</span>;</span><br><span class="line">......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><p>通常，构建一个真实的 <code>RecordSet</code> 对象需要经过一个复杂的过程：在开发过程中，开发人员通常会编写一个 <code>DBUtility</code> 类来获取数据库连接 <code>Connection</code>，并利用 <code>Connection</code> 创建一个 <code>Statement</code>。执行一个 <code>Statement</code> 可以获取到一个或多个 <code>ResultSet</code> 对象。这样的构造过程复杂并且依赖于数据库的正确运行。数据库或是数据库交互模块出现问题，都会影响单元测试的结果。</p>
+</li>
+<li><p>我们可以使用 EasyMock 动态构建 <code>ResultSet</code> 接口的 Mock 对象来解决这个问题。</p>
+</li>
+</ul>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">import</span> org.easymock.Easymock; <span class="comment">//静态方法引入</span></span><br><span class="line">ResultSet mockResultSet = createMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
+
+<p>或</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.easymock.Easymock; </span><br><span class="line">ResultSet mockResultSet = Easymock.createMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="2-1-2-为类生成Mock对象"><a href="#2-1-2-为类生成Mock对象" class="headerlink" title="2.1.2 为类生成Mock对象"></a>2.1.2 为类生成Mock对象</h4><p>EasyMock默认只支持为接口生成Mock对象，若要为类生成Mock对象，需下载扩展包<code>EasyMock Class Extension</code>，在对具体类进行模拟时，只需把 <code>org.easymock.EasyMock</code>替换为 <code>org.easymock.classextension.Easymock</code>。</p>
+<h4 id="2-1-3-使用IMocksControl对象管理Mock对象"><a href="#2-1-3-使用IMocksControl对象管理Mock对象" class="headerlink" title="2.1.3 使用IMocksControl对象管理Mock对象"></a>2.1.3 使用IMocksControl对象管理Mock对象</h4><p>若在相对复杂的测试用例中使用多个Mock对象，可使用EasyMock提供的生成和管理Mock对象的机制。</p>
+<p>EasyMock类的<code>createControl</code>方法能创建一个接口<code>IMocksControl</code>的对象，此对象能创建并管理多个Mock对象。</p>
+<p><font class="fb">Eg：</font></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">IMocksControl control = EasyMock.createControl();</span><br><span class="line">java.sql.Connection mockConnection = control.createMock(Connection<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">java.sql.Statement mockStatement = control.createMock(Statement<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">java.sql.ResultSet mockResultSet = control.createMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="2-2-设定Mock对象的预期行为和输出"><a href="#2-2-设定Mock对象的预期行为和输出" class="headerlink" title="2.2 设定Mock对象的预期行为和输出"></a>2.2 设定Mock对象的预期行为和输出</h3><ol>
+<li><p>在一个完整测试中，一个Mock对象会经历两个状态：Record状态和Replay状态。</p>
+<p>Mock对象一经创建，状态为Record，Record状态下用户可以设定Mock对象的预期行为和输出，这些对象行为会被录制下来，保存在Mock对象中。</p>
+</li>
+<li><p>添加Mock对象行为的过程分为三步：</p>
+<ul>
+<li>对Mock对象的特定方法作出调用</li>
+<li>通过org.easymock.EasyMock提供的静态方法expectLastCall获取上一次方法调用所对应的IExpectionSetters实例</li>
+<li>用过IExpectionSetters实例设定Mock对象的预期输出（有两种类型）<ul>
+<li>产生返回值</li>
+<li>抛出异常</li>
+</ul>
+</li>
+</ul>
+<p>（Mock对象的行为可简单理解为Mock对象的调用和方法调用所产生的输出。）</p>
+</li>
+</ol>
+<h4 id="2-2-1-设定预期返回值"><a href="#2-2-1-设定预期返回值" class="headerlink" title="2.2.1 设定预期返回值"></a>2.2.1 设定预期返回值</h4><p>设定返回值对应接口<code>IExpectionSetters</code>的<code>andReturn</code>方法。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">IExpectationSetters&lt;T&gt; <span class="title">andReturn</span><span class="params">(T value)</span></span>;</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="2-2-1-1-返回值不是void"><a href="#2-2-1-1-返回值不是void" class="headerlink" title="2.2.1.1 返回值不是void"></a>2.2.1.1 返回值不是void</h5><ol>
+<li><p><font class="fb">Eg：仍用 <code>ResultSet</code> 接口的 Mock 对象为例，若希望方法 <code>mockResultSet.getString(1)</code> 的返回值为 “My return value”，则：</font></p>
+ <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">mockResultSet.getString(<span class="number">1</span>);</span><br><span class="line">EasyMock.expectLastCall().andReturn(<span class="string">"My return value"</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p> <font class="fb">或：</font></p>
+</li>
+</ol>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.expect(mockResultSet.getString(<span class="number">1</span>)).andReturn(<span class="string">"My return value"</span>);</span><br></pre></td></tr></table></figure></div>
+
+<ol start="2">
+<li><p>若希望 <strong>某方法的调用总是返回一个相同的值</strong> ，为避免每次调用都为Mock对象的行为进行一次设定，可用默认返回值的方法——<code>andSubReturn</code>方法。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">andStubReturn</span><span class="params">(Object value)</span></span>;</span><br></pre></td></tr></table></figure></div>
+
+<p><font class="fb">Eg：假设我们创建了 <code>Statement</code> 和 <code>ResultSet</code> 接口的 Mock 对象 mockStatement 和 mockResultSet，在测试过程中，我们希望 mockStatement 对象的 <code>executeQuery</code> 方法总是返回 mockResultSet，则：</font></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">mockStatement.executeQuery(<span class="string">"SELECT * FROM sales_order_table"</span>);</span><br><span class="line">EasyMock.expectLastCall().andStubReturn(mockResultSet);</span><br></pre></td></tr></table></figure></div>
+
+<p><font class="fb">或：</font></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.expect(mockStatement.executeQuery(<span class="string">"SELECT * FROM sales_order_table"</span>)).andStubReturn(mockResultSet);</span><br></pre></td></tr></table></figure></div>
+
+</li>
+</ol>
+<h5 id="2-2-1-2-返回值为void"><a href="#2-2-1-2-返回值为void" class="headerlink" title="2.2.1.2 返回值为void"></a>2.2.1.2 返回值为void</h5><p>若方法的返回值类型为void，则对于此类方法，我们无需设定返回值，只需设置调用次数就可以。（也可以不设置）</p>
+<p>How设定调用次数，详看2.2.3。</p>
+<p><font class="fb">Eg：以 <code>ResultSet</code> 接口的 <code>close</code> 方法为例，假设在测试过程中，该方法被调用3至5次，则：</font></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">mockResultSet.close();</span><br><span class="line">EasyMock.expectLastCall().times(<span class="number">3</span>,<span class="number">5</span>);<span class="comment">// 最新版本的EasyMock可以忽略此句</span></span><br></pre></td></tr></table></figure></div>
+
+<p><font class="fb">或：</font></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.expect(mockResult.close()).times(<span class="number">3</span>, <span class="number">5</span>);</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="2-2-2-设定预期异常抛出"><a href="#2-2-2-设定预期异常抛出" class="headerlink" title="2.2.2 设定预期异常抛出"></a>2.2.2 设定预期异常抛出</h4><p>设定预期抛出异常对应接口<code>IExpectionSetters</code>的<code>andThrow</code>方法。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">IExpectationSetters&lt;T&gt; <span class="title">andThrow</span><span class="params">(Throwable throwable)</span></span>;</span><br></pre></td></tr></table></figure></div>
+
+<p>类似的，设定抛出默认异常对应接口<code>IExpectionSetters</code>的<code>andStubThrow</code>方法。</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">andStubThrow</span><span class="params">(Throwable throwable)</span></span>;</span><br></pre></td></tr></table></figure></div>
+
+<p><font class="fb">Eg：</font></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.expectLastCall().andThrow(</span><br><span class="line">                <span class="keyword">new</span> MyException(<span class="keyword">new</span> RuntimeException())).anyTimes();</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="2-2-3-设定预期方法调用次数"><a href="#2-2-3-设定预期方法调用次数" class="headerlink" title="2.2.3 设定预期方法调用次数"></a>2.2.3 设定预期方法调用次数</h4><ol>
+<li>设定确定的调用次数：通过接口<code>IExpectionSetters</code>的<code>times</code>方法。</li>
+</ol>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">IExpectationSetters&lt;T&gt;times(<span class="keyword">int</span> count);</span><br></pre></td></tr></table></figure></div>
+
+<p><font class="fb">Eg：我们希望 mockResultSet 的 <code>getString</code> 方法在测试过程中被调用3次，期间的返回值都是 “My return value”，则：</font></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">mockResultSet.getString(<span class="number">1</span>);</span><br><span class="line">expectLastCall().andReturn(<span class="string">"My return value"</span>).times(<span class="number">3</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p><font class="fb">或：</font></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.expect(mockResultSet.getString(<span class="number">1</span>)).andReturn(<span class="string">"My return value"</span>).times(<span class="number">3</span>);</span><br></pre></td></tr></table></figure></div>
+
+<ol start="2">
+<li>设定非准确调用次数：<ul>
+<li><code>times(int minTimes, int maxTimes)</code>：该方法最少被调用 minTimes 次，最多被调用 maxTimes 次。</li>
+<li><code>atLeastOnce()</code>：该方法至少被调用一次。</li>
+<li><code>anyTimes()</code>：该方法可以被调用任意次。</li>
+</ul>
+</li>
+</ol>
+<h4 id="2-2-4-若返回结果在运行时才能确定"><a href="#2-2-4-若返回结果在运行时才能确定" class="headerlink" title="2.2.4 若返回结果在运行时才能确定"></a>2.2.4 若返回结果在运行时才能确定</h4><p>很可能某个方法期望的返回结果不是固定的，例如根据传入参数不同而不同；这时需要使用<strong>andAnswer</strong>()方法：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.expect(mockService.execute(EasyMock.anyInt())).andAnswer(<span class="keyword">new</span> IAnswer&lt;Integer&gt;() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">answer</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        Integer count = (Integer) EasyMock.getCurrentArguments()[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">return</span> count * <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></div>
+
+<div class="note warning">
+            <p>​    注意：通过<code>EasyMock.getCurrentArguments()</code>可以获取传入参数！</p>
+          </div>
+
+
+
+<h3 id="2-3-将Mock对象切换到Replay状态——replay"><a href="#2-3-将Mock对象切换到Replay状态——replay" class="headerlink" title="2.3 将Mock对象切换到Replay状态——replay"></a>2.3 将Mock对象切换到Replay状态——replay</h3><ol>
+<li><p>在生成Mock对象和设定Mock对象行为的两个阶段，Mock对象的状态均为Record，此阶段Mock对象会记录用户对预期行为和输出的设定。</p>
+</li>
+<li><p>在使用Mock对象隐形实际的测试前，需将Mock对象的状态切换为Replay，此阶段Mock对象能根据设定对特定的方法调用作出预期的响应。</p>
+</li>
+<li><p>将对象切换到Replay状态有两种方法：</p>
+<ul>
+<li><p>若Mock对象是通过createMock方法生成</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.replay(mockResultSet);</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>若Mock对象通过createControl方法生成的接口对象control的createMock方法生成</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">control.replay();</span><br></pre></td></tr></table></figure></div>
+
+<p>此语句可将通过coltrol的createMock方法生成的所有Mock对象均切换为Replay状态。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-4-调用Mock对象方法进行单元测试"><a href="#2-4-调用Mock对象方法进行单元测试" class="headerlink" title="2.4 调用Mock对象方法进行单元测试"></a>2.4 调用Mock对象方法进行单元测试</h3><p>此部分放到JUnit+EasyMock实例中。</p>
+<h3 id="2-5-对Mock对象的行为进行验证——verify"><a href="#2-5-对Mock对象的行为进行验证——verify" class="headerlink" title="2.5 对Mock对象的行为进行验证——verify"></a>2.5 对Mock对象的行为进行验证——verify</h3><p>在利用Mock对象进行实际的测试过程后，还需对Mock对象的方法调用的次数进行验证。</p>
+<ul>
+<li><p>若Mock对象是通过createMock方法生成</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.verify(mockResultSet);</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>若Mock对象通过createControl方法生成的接口对象control的createMock方法生成</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">control.verify();</span><br></pre></td></tr></table></figure></div>
+
+<p>同理，此语句可验证通过coltrol的createMock方法生成的所有Mock对象方法的调用次数。</p>
+</li>
+</ul>
+<h3 id="2-6-Mock对象的重用——reset"><a href="#2-6-Mock对象的重用——reset" class="headerlink" title="2.6 Mock对象的重用——reset"></a>2.6 Mock对象的重用——reset</h3><p>为避免生成过多的Mock对象，EasyMock允许对原有的Mock对象进行重用。</p>
+<p>可使用reset方法对Mock对象重新初始化。重新初始化后，Mock对象被置为Record状态。</p>
+<ul>
+<li><p>若Mock对象是通过createMock方法生成</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.reset(mockResultSet);</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>若Mock对象通过createControl方法生成的接口对象control的createMock方法生成</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">control.reset();</span><br></pre></td></tr></table></figure></div>
+
+<p>同理，此语句可验证通过coltrol的createMock方法生成的所有Mock对象重新初始化。</p>
+</li>
+</ul>
+<hr>
+<h2 id="三、在EasyMock中使用参数匹配器"><a href="#三、在EasyMock中使用参数匹配器" class="headerlink" title="三、在EasyMock中使用参数匹配器"></a>三、在EasyMock中使用参数匹配器</h2><p>使用Mock对象进行实际的测试过程中，EasyMock会根据方法名和参数来匹配一个预期方法的调用。</p>
+<p>此时，EasyMock对参数的匹配默认使用equals()方法进行比较，这可能会引起一些问题，因此EasyMock提供了一些参数匹配方式。</p>
+<div class="note info">
+            <p><font class="fb">如2.2.1.1中创建的mockStatement对象：</font></p><div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">mockStatement.executeQuery(<span class="string">"SELECT * FROM sales_order_table"</span>);</span><br><span class="line">EasyMock.expectLastCall().andStubReturn(mockResultSet);</span><br></pre></td></tr></table></figure></div><p>实际调用中，可能会遇到SQL语句中某些关键词大小写问题（因为SQL语句不区分大小写）如将SELECT写成select，此时EasyMock采用的默认匹配器equals方法将认为参数不匹配，则Mock对象的预期方法不会被调用。</p>
+          </div>
+
+<h3 id="3-1-EasyMock预定义的参数匹配器"><a href="#3-1-EasyMock预定义的参数匹配器" class="headerlink" title="3.1 EasyMock预定义的参数匹配器"></a>3.1 EasyMock预定义的参数匹配器</h3><ol>
+<li><p><code>anyObject()</code>：任意输入值都与预期值匹配；</p>
+</li>
+<li><p><code>aryEq(X value)</code>：通过<code>Arrays.equals()</code>进行匹配，适用于数组对象；</p>
+</li>
+<li><p><code>isNull()</code>：当输入值为Null时匹配；</p>
+</li>
+<li><p><code>notNull()</code>：当输入值不为Null时匹配；</p>
+</li>
+<li><p><code>same(X value)</code>：当输入值和预期值是同一个对象时匹配；</p>
+</li>
+<li><p><code>lt(X value), leq(X value), geq(X value), gt(X value)</code>：当输入值小于、小等于、大等于、大于预期值时匹配，适用于数值类型；</p>
+</li>
+<li><p><code>startsWith(String prefix), contains(String substring), endsWith(String suffix)</code>：当输入值以预期值开头、包含预期值、以预期值结尾时匹配，适用于String类型；</p>
+</li>
+<li><p><code>matches(String regex)</code>：当输入值与正则表达式匹配时匹配，适用于String类型。</p>
+<p><font class="fb">例如：若我对mockStatement具体执行的语句并不关注，希望所有输入的字符串都能够匹配这一方法的调用</font></p>
+</li>
+</ol>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.expect(mockStatement.executeQuery(anyObject())).andStubReturn(mockResultSet);</span><br></pre></td></tr></table></figure></div>
+
+<p>详细参阅 <a href="https://www.iteye.com/blog/skydream-829327" target="_blank" rel="noopener">easymock教程-参数匹配</a></p>
+<h3 id="3-2-EasyMock自定义参数匹配器"><a href="#3-2-EasyMock自定义参数匹配器" class="headerlink" title="3.2 EasyMock自定义参数匹配器"></a>3.2 EasyMock自定义参数匹配器</h3><ol>
+<li><p>预定义的参数匹配器无法满足一些复杂情况，此时需自己定义参数匹配器。</p>
+<p><font class="fb">如：在3.1中我们希望有一个匹配器对SQL中关键词的大小写不敏感，使用anyObject其实并不好，此时我们可以自定义参数匹配器SQLEquals。</font></p>
+</li>
+<li><p>How自定义参数匹配器：</p>
+<ul>
+<li><p>实现 <code>org.easymock.IArgumentMatcher</code> 接口</p>
+<ul>
+<li><p><code>matches(Object actual)</code> 方法应当实现输入值和预期值的匹配逻辑</p>
+</li>
+<li><p><code>appendTo(StringBuffer buffer)</code> 方法可以添加当匹配失败时需要显示的信息</p>
+</li>
+</ul>
+</li>
+<li><p>使用静态方法包装实现接口的类</p>
+</li>
+</ul>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> org.easymock.demo.matcher;</span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.easymock.EasyMock.reportMatcher;</span><br><span class="line"><span class="keyword">import</span> org.easymock.IArgumentMatcher;</span><br><span class="line"><span class="comment">//实现IArgumentMatcher接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SQLEquals</span> <span class="keyword">implements</span> <span class="title">IArgumentMatcher</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String expectedSQL = <span class="keyword">null</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SQLEquals</span><span class="params">(String expectedSQL)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.expectedSQL = expectedSQL;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//当匹配失败时需要显示的信息</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">appendTo</span><span class="params">(StringBuffer buffer)</span> </span>&#123;</span><br><span class="line">		buffer.append(<span class="string">"SQLEquals(\""</span> + expectedSQL + <span class="string">"\")"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//输入值和预期值的匹配逻辑</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">matches</span><span class="params">(Object actualSQL)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (actualSQL == <span class="keyword">null</span> &amp;&amp; expectedSQL == <span class="keyword">null</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (actualSQL <span class="keyword">instanceof</span> String)</span><br><span class="line">			<span class="keyword">return</span> expectedSQL.equalsIgnoreCase((String) actualSQL);</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//自定义参数匹配器SQLEquals静态方法	</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">sqlEquals</span><span class="params">(String in)</span> </span>&#123;</span><br><span class="line">        reportMatcher(<span class="keyword">new</span> SQLEquals(in));</span><br><span class="line">        <span class="keyword">return</span> in;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><font class="fb">使用自定义的sqlEquals匹配器：</font></p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">EasyMock.expect(mockStatement.executeQuery(sqlEquals(<span class="string">"SELECT * FROM sales_order_table"</span>))).andStubReturn(mockResultSet);</span><br></pre></td></tr></table></figure></div>
+
+</li>
+</ol>
+<hr>
+<h2 id="四、特殊的Mock对象类型"><a href="#四、特殊的Mock对象类型" class="headerlink" title="四、特殊的Mock对象类型"></a>四、特殊的Mock对象类型</h2><p>上述创建的Mock对象都属于EasyMock默认的Mock对象类型，它对预期方法的调用顺序不敏感，对非预期的方法调用抛出AssertionError。</p>
+<p>除此默认类型，EasyMock还提供一些特殊的Mock类型用于支持不同的需求。</p>
+<h3 id="4-1-Strick-Mock对象"><a href="#4-1-Strick-Mock对象" class="headerlink" title="4.1 Strick Mock对象"></a>4.1 Strick Mock对象</h3><p>Stick Mock对象——对方法调用的先后顺序敏感，创建方法如下：</p>
+<ol>
+<li>使用 <code>EasyMock.createStrickMock()</code> 来创建：</li>
+</ol>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ResultSet strickMockResultSet = EasyMock.createStrickMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
+
+<ol start="2">
+<li><p>类似于createMock，同样可用<code>IMocksControl</code>实例来创建一个Stick Mock对象：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">IMocksControl control = EasyMock.createStrictControl();</span><br><span class="line">ResultSet strickMockResultSet = control.createMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
+
+
+
+</li>
+</ol>
+<h3 id="4-2-Nice-Mock对象"><a href="#4-2-Nice-Mock对象" class="headerlink" title="4.2 Nice Mock对象"></a>4.2 Nice Mock对象</h3><p>Nice Mock对象——默认返回0，null或false等“无效值”，创建方法如下：</p>
+<ol>
+<li>使用 <code>EasyMock.createNiceMock()</code> 来创建：</li>
+</ol>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ResultSet strickMockResultSet = EasyMock.createNiceMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
+
+<ol start="2">
+<li><p>类似于createMock，同样可用<code>IMocksControl</code>实例来创建一个Nice Mock对象：</p>
+<div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">IMocksControl control = EasyMock.createNiceControl();</span><br><span class="line">ResultSet strickMockResultSet = control.createMock(ResultSet<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure></div>
+
+</li>
+</ol>
+<hr>
+<h2 id="五、EasyMock-的工作原理"><a href="#五、EasyMock-的工作原理" class="headerlink" title="五、EasyMock 的工作原理"></a>五、EasyMock 的工作原理</h2><p>参阅  <a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-easymock/" target="_blank" rel="noopener">EasyMock使用方法与原理剖析</a></p>
+<hr>
+<h2 id="六、参考文献"><a href="#六、参考文献" class="headerlink" title="六、参考文献"></a>六、参考文献</h2><p><a href="https://www.ibm.com/developerworks/cn/opensource/os-cn-easymock/" target="_blank" rel="noopener">EasyMock使用方法与原理剖析</a></p>
+<p><a href="https://www.iteye.com/blog/skydream-829327" target="_blank" rel="noopener">easymock教程-参数匹配</a></p>
+<p><a href="https://blog.csdn.net/vking_wang/article/details/9170979" target="_blank" rel="noopener">【JUnit】EasyMock用法总结</a></p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>Java</tag>
+        <tag>EasyMock</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JUnit测试实例</title>
     <url>/2020/03/31/JUnit%E6%B5%8B%E8%AF%95%E5%AE%9E%E4%BE%8B/</url>
     <content><![CDATA[<h1 id="JUnit-测试实例"><a href="#JUnit-测试实例" class="headerlink" title="JUnit 测试实例"></a>JUnit 测试实例</h1><h2 id="一、-实验要求"><a href="#一、-实验要求" class="headerlink" title="一、 实验要求"></a>一、 实验要求</h2><p>对Rectangle程序进行测试：根据已经学习的测试思想，对函数getArea()、getPerimeter()和findMax()进行测试。</p>
@@ -67,7 +345,7 @@
 <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> junit.framework.TestCase;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.Parameterized;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(Parameterized<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">TestRectArea</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> length;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> width;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> expected;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestRectArea</span><span class="params">(<span class="keyword">int</span> length, <span class="keyword">int</span> width, <span class="keyword">int</span> expected)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.length=length;</span><br><span class="line">        <span class="keyword">this</span>.width=width;</span><br><span class="line">        <span class="keyword">this</span>.expected=expected;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//假设要测试的getArea方法遇到非法输入时返回-1</span></span><br><span class="line">    <span class="meta">@Parameterized</span>.Parameters(name=<span class="string">"&#123;index&#125;:&#123;0&#125;*&#123;1&#125;=&#123;2&#125;"</span>)</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Iterable&lt;Object []&gt; data()&#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.asList(<span class="keyword">new</span> Object[][]&#123;</span><br><span class="line">                &#123;<span class="number">3</span>,<span class="number">4</span>,<span class="number">12</span>&#125;,</span><br><span class="line">                &#123;-<span class="number">3</span>,<span class="number">4</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">4</span>,-<span class="number">3</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;-<span class="number">5</span>,-<span class="number">6</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">3</span>,<span class="number">0</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">0</span>,<span class="number">4</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">0</span>,<span class="number">0</span>,-<span class="number">1</span>&#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testGetArea</span><span class="params">()</span></span>&#123;</span><br><span class="line">        assertEquals(<span class="keyword">new</span> Rect(length,width).getArea(),expected);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>测试结果</p>
-<p><a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331131227787.png" data-fancybox="group" data-caption="image-20200331131227787" class="fancybox"><img alt="image-20200331131227787" title="image-20200331131227787" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331131227787.png" class="lazyload"></a></p>
+<p><a href="https://gitee.com/yijingwang/blogImage/raw/master/img/xx1.png" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/xx1.png" class="lazyload"></a></p>
 <table>
 <thead>
 <tr>
@@ -178,7 +456,7 @@
 <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> junit.framework.TestCase;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.Parameterized;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(Parameterized<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">TestRectPerimeter</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> length;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> width;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> expected;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestRectPerimeter</span><span class="params">(<span class="keyword">int</span> length,<span class="keyword">int</span> width,<span class="keyword">int</span> expected)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.length=length;</span><br><span class="line">        <span class="keyword">this</span>.width=width;</span><br><span class="line">        <span class="keyword">this</span>.expected=expected;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//假设要测试的getPerimeter方法遇到非法输入时返回-1</span></span><br><span class="line">    <span class="meta">@Parameterized</span>.Parameters(name=<span class="string">"&#123;index&#125;:(&#123;0&#125;+&#123;1&#125;)*2=&#123;2&#125;"</span>)</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Iterable&lt;Object []&gt; data()&#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.asList(<span class="keyword">new</span> Object[][]&#123;</span><br><span class="line">                &#123;<span class="number">5</span>,<span class="number">6</span>,<span class="number">22</span>&#125;,</span><br><span class="line">                &#123;-<span class="number">3</span>,<span class="number">4</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">3</span>,-<span class="number">4</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;-<span class="number">3</span>,-<span class="number">4</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">3</span>,<span class="number">0</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">0</span>,<span class="number">4</span>,-<span class="number">1</span>&#125;,</span><br><span class="line">                &#123;<span class="number">0</span>,<span class="number">0</span>,-<span class="number">1</span>&#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testGetPerimeter</span><span class="params">()</span></span>&#123;</span><br><span class="line">        assertEquals(<span class="keyword">new</span> Rect(length,width).getPerimeter(),expected);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>测试结果</p>
-<p><a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331132940836.png" data-fancybox="group" data-caption="image-20200331132940836" class="fancybox"><img alt="image-20200331132940836" title="image-20200331132940836" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331132940836.png" class="lazyload"></a></p>
+<p><a href="https://gitee.com/yijingwang/blogImage/raw/master/img/xx2.png" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/xx2.png" class="lazyload"></a></p>
 <table>
 <thead>
 <tr>
@@ -280,7 +558,7 @@
 <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> junit.framework.TestCase;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.Parameterized;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(Parameterized<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">TestRectFindMaxArea</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Rect[] arr;</span><br><span class="line">    <span class="keyword">private</span> Rect expected;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestRectFindMaxArea</span><span class="params">(Rect[] arr,Rect expected)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.arr=arr;</span><br><span class="line">        <span class="keyword">this</span>.expected=expected;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Parameterized</span>.Parameters</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Iterable&lt;Object[]&gt; data()&#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.asList(<span class="keyword">new</span> Object[][]&#123;</span><br><span class="line">                &#123;<span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">10</span>, <span class="number">20</span>), <span class="keyword">new</span> Rect(<span class="number">2</span>, <span class="number">65</span>),</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">3</span>, <span class="number">10</span>), <span class="keyword">new</span> Rect(<span class="number">6</span>, <span class="number">20</span>)</span><br><span class="line">                &#125;,<span class="keyword">new</span> Rect(<span class="number">10</span>,<span class="number">20</span>)&#125;,</span><br><span class="line">                &#123;<span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                        <span class="keyword">new</span> Rect(-<span class="number">4</span>, <span class="number">3</span>), <span class="keyword">new</span> Rect(<span class="number">5</span>, -<span class="number">6</span>),</span><br><span class="line">                        <span class="keyword">new</span> Rect(-<span class="number">10</span>, -<span class="number">10</span>), <span class="keyword">new</span> Rect(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">                &#125;,<span class="keyword">new</span> Rect(<span class="number">1</span>,<span class="number">1</span>)&#125;,</span><br><span class="line">                &#123;<span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">3</span>), <span class="keyword">new</span> Rect(<span class="number">6</span>, <span class="number">0</span>),</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>), <span class="keyword">new</span> Rect(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">                &#125;,<span class="keyword">new</span> Rect(<span class="number">1</span>,<span class="number">1</span>)&#125;,</span><br><span class="line">                &#123;<span class="keyword">new</span> Rect[] &#123;</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">3</span>), <span class="keyword">new</span> Rect(<span class="number">6</span>, <span class="number">0</span>),</span><br><span class="line">                        <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>), <span class="keyword">new</span> Rect(-<span class="number">1</span>, -<span class="number">1</span>)</span><br><span class="line">                &#125;,<span class="keyword">null</span>&#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindMax</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Rect temp=Rect.findMax(arr, <span class="keyword">new</span> Rect.areaCompare());</span><br><span class="line">        String stemp,sexpected;</span><br><span class="line">        <span class="keyword">if</span>(temp!=<span class="keyword">null</span>) stemp=temp.getObject();</span><br><span class="line">        <span class="keyword">else</span> stemp=<span class="string">"null"</span>;</span><br><span class="line">        <span class="keyword">if</span>(expected!=<span class="keyword">null</span>) sexpected=expected.getObject();</span><br><span class="line">        <span class="keyword">else</span> sexpected=<span class="string">"null"</span>;</span><br><span class="line">        assertEquals(stemp,sexpected);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>测试结果</p>
-<p><a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331134519946.png" data-fancybox="group" data-caption="image-20200331134519946" class="fancybox"><img alt="image-20200331134519946" title="image-20200331134519946" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331134519946.png" class="lazyload"></a></p>
+<p><a href="https://gitee.com/yijingwang/blogImage/raw/master/img/xx3.png" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/xx3.png" class="lazyload"></a></p>
 <table>
 <thead>
 <tr>
@@ -364,7 +642,7 @@
 </ol>
 <ol start="3">
 <li><p>测试结果</p>
-<p><a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331135706749.png" data-fancybox="group" data-caption="image-20200331135706749" class="fancybox"><img alt="image-20200331135706749" title="image-20200331135706749" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331135706749.png" class="lazyload"></a></p>
+<p><a href="https://gitee.com/yijingwang/blogImage/raw/master/img/xx4.png" data-fancybox="group" data-caption class="fancybox"><img alt title data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/xx4.png" class="lazyload"></a></p>
 <table>
 <thead>
 <tr>
@@ -409,7 +687,7 @@
 <div class="code-area-wrap"><div class="highlight-tools"><i class="fa fa-angle-down code-expand" aria-hidden="true"></i><div class="code_lang">java</div><div class="copy-notice"></div><i class="fa fa-clipboard" aria-hidden="true"></i></div><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.junit.runners.Suite;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(Suite<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">Suite</span>.<span class="title">SuiteClasses</span>(</span>&#123;TestRectArea<span class="class">.<span class="keyword">class</span>,<span class="title">TestRectPerimeter</span>.<span class="title">class</span>,<span class="title">TestRectFindMaxArea</span>.<span class="title">class</span>,<span class="title">TestRectFindMaxPerimeter</span>.<span class="title">class</span>&#125;)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">TestRectSuite</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>测试结果：</p>
-<a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331140528799.png" data-fancybox="group" data-caption="image-20200331140528799" class="fancybox"><img alt="image-20200331140528799" style="zoom:40%;" title="image-20200331140528799" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331140528799.png" class="lazyload"></a>
+<a href="https://gitee.com/yijingwang/blogImage/raw/master/img/xx5.png" data-fancybox="group" data-caption="undefined" class="fancybox"><img style="zoom:48%;" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/xx5.png" class="lazyload"></a>
 
 <p>程序执行结果：</p>
 <a href="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331140852779.png" data-fancybox="group" data-caption="image-20200331140852779" class="fancybox"><img alt="image-20200331140852779" style="zoom:33%;" title="image-20200331140852779" data-src="https://gitee.com/yijingwang/blogImage/raw/master/img/image-20200331140852779.png" class="lazyload"></a>
